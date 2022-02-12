@@ -1,6 +1,6 @@
 .input {
     display: flex;
-    width: 90%;
+    width: 95%;
     position: relative;
     align-items: center;
 }
@@ -60,13 +60,6 @@
     width: 47.5%;
     padding: 15px;
     background-color: rgb(50, 195, 205);
-
-    /*
-      display: flex;
-      justify-content: space-evenly;
-      width: 90%;
-      flex-wrap: wrap;
-    */
 }
   
 .dragactive {

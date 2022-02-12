@@ -1,4 +1,5 @@
 import React from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { MdDone } from "react-icons/md";
@@ -7,12 +8,14 @@ import { Task } from "../models/models";
 import './styles.css';
 
 type Props = {
+    index: number;
     task: Task;
     setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
     tasks: Task[];
+    drop?: boolean;
 };
 
-const SingleTask = ({ task, tasks, setTasks }: Props) => {
+const SingleTask = ({ drop, index, task, tasks, setTasks }: Props) => {
     const [isEditing, setIsEditing] = React.useState<boolean>(false);
     const [taskToEdit, setTaskToEdit] = React.useState<string>(task.todo);
 
@@ -47,43 +50,53 @@ const SingleTask = ({ task, tasks, setTasks }: Props) => {
     }, [isEditing]);
 
   return (
-    <form className='todos__single' onSubmit={(e) => handleEdit(e, task.id)}>
-        {isEditing ? (
-            <input
-              ref={inputRef}
-              value={taskToEdit}
-              onChange={(e) => setTaskToEdit(e.target.value)}
-              className='todos__single--text'
-            />
-        ):(
-            task.isDone ? (
-                <s className='todos__single--text'>
-                  {task.todo}
-                </s>
-            ) : (
-                <span className='todos__single--text'>
-                  {task.todo}
-                </span>
-            )
-        )}
-
-        <div>
-            <span className="icon" onClick={
-                () => {
-                    if (!isEditing && !task.isDone) {
-                        setIsEditing(!isEditing);
-                }
-            }}>
-                <AiFillEdit />
-            </span>
-            <span className="icon" onClick={() => handleDelete(task.id)}>
-                <AiFillDelete />
-            </span>
-            <span className="icon" onClick={() => handleDone(task.id)}>
-                <MdDone />
-            </span>
-        </div>
-    </form>
+      <Draggable draggableId={task.id.toString()} index={index}>
+          {(provided, snapshot) => (
+              <form
+                className={`todos__single ${snapshot.isDragging ? 'drag' : ''}`}
+                onSubmit={(e) => handleEdit(e, task.id)}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+                ref={provided.innerRef}
+              >
+              {isEditing ? (
+                  <input
+                    ref={inputRef}
+                    value={taskToEdit}
+                    onChange={(e) => setTaskToEdit(e.target.value)}
+                    className='todos__single--text'
+                  />
+              ):(
+                  task.isDone ? (
+                      <s className='todos__single--text'>
+                        {task.todo}
+                      </s>
+                  ) : (
+                      <span className='todos__single--text'>
+                        {task.todo}
+                      </span>
+                  )
+              )}
+      
+              {drop ? (null) : (<div>
+                  <span className="icon" onClick={
+                      () => {
+                          if (!isEditing && !task.isDone) {
+                              setIsEditing(!isEditing);
+                      }
+                  }}>
+                      <AiFillEdit />
+                  </span>
+                  <span className="icon" onClick={() => handleDelete(task.id)}>
+                      <AiFillDelete />
+                  </span>
+                  <span className="icon" onClick={() => handleDone(task.id)}>
+                      <MdDone />
+                  </span>
+              </div>)}
+          </form>
+          )}
+      </Draggable>
   )
 }
 
