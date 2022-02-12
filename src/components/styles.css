@@ -4,6 +4,7 @@
     position: relative;
     align-items: center;
 }
+
 .input__box {
     width: 100%;
     border-radius: 50px;
@@ -54,10 +55,18 @@
 .todos {
     border-radius: 5px;
     display: flex;
+    justify-content: space-evenly;
     flex-direction: column;
     width: 47.5%;
     padding: 15px;
     background-color: rgb(50, 195, 205);
+
+    /*
+      display: flex;
+      justify-content: space-evenly;
+      width: 90%;
+      flex-wrap: wrap;
+    */
 }
   
 .dragactive {

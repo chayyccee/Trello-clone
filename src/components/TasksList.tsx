@@ -1,5 +1,6 @@
 import React from 'react';
 import { Task } from '../models/models';
+import SingleTask from './SingleTask';
 
 import './styles.css';
 
@@ -12,7 +13,12 @@ const TasksList: React.FC<Props> = ({ tasks, setTasks }) => {
   return (
     <div className='todos'>
         {tasks.map((task) => (
-            <div className='todo' key={task.id}>{task.todo}</div>
+            <SingleTask
+              task={task}
+              key={task.id}
+              setTasks={setTasks}
+              tasks={tasks}
+            />
         ))}
     </div>
   )
